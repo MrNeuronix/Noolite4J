@@ -127,12 +127,13 @@ public class RX2164 {
             public void run() {
 
                 ByteBuffer tmpBuf = ByteBuffer.allocateDirect(8);
+                ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
                 /**
                  * Главный цикл получения данных
                  */
                 while (!shutdown) {
-                    ByteBuffer buf = ByteBuffer.allocateDirect(8);
+
                     if (!pause) {
                         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100L);
                     }
@@ -146,10 +147,11 @@ public class RX2164 {
 
                         byte channel = (byte)(buf.get(1) + 1);
                         byte action = buf.get(2);
-                        byte dimmerValue = buf.get(4);
 
                         // Записываем в temp буффер
+                        tmpBuf.clear();
                         tmpBuf = buf;
+                        buf.clear();
                     }
 
                     try {
