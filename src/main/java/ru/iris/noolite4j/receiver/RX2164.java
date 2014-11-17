@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 public class RX2164 {
 
-    private static final long READ_UPDATE_DELAY_MS = 500L;
+    private static final long READ_UPDATE_DELAY_MS = 200L;
     private static final short VENDOR_ID = 5824; // 0x16c0;
     private static final short PRODUCT_ID = 1500; // 0x05dc;
     private final Logger LOGGER = LoggerFactory.getLogger(RX2164.class.getName());
@@ -126,7 +126,7 @@ public class RX2164 {
             @Override
             public void run() {
 
-                ByteBuffer tmpBuf = ByteBuffer.allocateDirect(8);
+                int tmpTogl = 0;
                 ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
                 /**
@@ -139,19 +139,21 @@ public class RX2164 {
                     }
 
                     /**
-                     * Сравниваем буфферы, чтобы понять, что пришла новая команда
+                     * Сравниваем значение TOGL, чтобы понять, что пришла новая команда
                      */
-                    if (!buf.equals(tmpBuf)) {
-                        LOGGER.info("Содержимое буфера RX2164: " + buf.get(0) + " " + buf.get(1) + " " + buf.get(2) + " " + buf.get(3) + " " + buf.get(4) + " " + buf.get(5) + " " + buf.get(6)
-                                + " " + buf.get(7));
+                    int togl = buf.get(0) & 63;
+
+                    if (togl != tmpTogl) {
 
                         byte channel = (byte)(buf.get(1) + 1);
                         byte action = buf.get(2);
 
-                        // Записываем в temp буффер
-                        tmpBuf.clear();
-                        tmpBuf = buf;
-                        buf.clear();
+                        LOGGER.info("Получена новая команда для RX2164");
+                        LOGGER.info("Значение TOGL: " + togl);
+                        LOGGER.info("Канал: " + channel);
+
+                        LOGGER.info("Содержимое буфера RX2164: " + buf.get(0) + " " + buf.get(1) + " " + buf.get(2) + " " + buf.get(3) + " " + buf.get(4) + " " + buf.get(5) + " " + buf.get(6)
+                                + " " + buf.get(7));
                     }
 
                     try {
@@ -161,6 +163,7 @@ public class RX2164 {
                         e.printStackTrace();
                     }
 
+                    tmpTogl = togl;
                 }
             }
         }).start();

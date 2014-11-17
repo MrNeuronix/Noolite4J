@@ -144,7 +144,7 @@ public class PC11xx {
         }
         else
         {
-            LOGGER.info("Устанавливается уровень {} на канале {}", (channel+1), level);
+            LOGGER.info("Устанавливается уровень {} на канале {}", level, (channel+1));
         }
 
         buf.position(5);
