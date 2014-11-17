@@ -1,0 +1,11 @@
+*.iml
+.idea
+target
+*.db
+.directory
+*.log
+work
+main.property
+log4j2.xml
+*.zip
+
