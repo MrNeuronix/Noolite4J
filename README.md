@@ -4,6 +4,10 @@ Java API к протоколу Noolite
 
 [![Build Status](https://travis-ci.org/Neuronix2/Noolite4J.png?branch=master)](https://travis-ci.org/Neuronix2/Noolite4J)
 
+## Сборка
+
+mvn package
+
 ## Использование
 
 Выполните в консоли **java -jar noolite4j-0.1.jar** - это запустит простую программу проверки.

@@ -42,6 +42,8 @@ public class PC11xx {
 
     public void open() throws LibUsbException {
 
+        LOGGER.info("Открывается устройство PC11xx");
+
         // Инициализируем контекст
         int result = LibUsb.init(context);
         if (result != LibUsb.SUCCESS)
@@ -59,6 +61,7 @@ public class PC11xx {
     }
 
     public void close() {
+        LOGGER.info("Закрывается устройство PC11xx");
         LibUsb.exit(context);
     }
 
@@ -68,6 +71,8 @@ public class PC11xx {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
+
+        LOGGER.info("Включается устройство на канале {}", (channel+1));
 
         /**
          * Отсчет каналов начинается с 0
@@ -91,6 +96,8 @@ public class PC11xx {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
+
+        LOGGER.info("Выключается устройство на канале {}", (channel+1));
 
         /**
          * Отсчет каналов начинается с 0

@@ -23,7 +23,7 @@ package ru.iris.noolite4j.devices;
 public class BaseDevice {
 
     /**
-     * Канал устроства Noolite
+     * Канал устройства Noolite
      */
     protected short channel = 0;
 

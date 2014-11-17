@@ -60,6 +60,8 @@ public class RX2164 {
      */
     public void open() throws LibUsbException {
 
+        LOGGER.info("Открывается устройство RX2164");
+
         // Инициализируем контекст
         int result = LibUsb.init(context);
         if (result != LibUsb.SUCCESS)
@@ -75,7 +77,7 @@ public class RX2164 {
             }
         }
 
-        DeviceHandle handle = LibUsb.openDeviceWithVidPid(context, VENDOR_ID, PRODUCT_ID);
+        handle = LibUsb.openDeviceWithVidPid(context, VENDOR_ID, PRODUCT_ID);
 
         if (handle == null)
         {
@@ -108,6 +110,7 @@ public class RX2164 {
      * Завершение работы
      */
     public void close() {
+        LOGGER.info("Закрывается устройство RX2164");
         shutdown = true;
         LibUsb.exit(context);
     }
@@ -117,6 +120,8 @@ public class RX2164 {
      */
     public void start()
     {
+        LOGGER.info("Запускается процесс получения данных на устройстве RX2164");
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -132,9 +137,31 @@ public class RX2164 {
                         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100L);
                     }
 
+                    /**
+                     * Сравниваем буфферы, чтобы понять, что пришла новая команда
+                     */
+                    if (!buf.equals(tmpBuf)) {
+                        LOGGER.info("Содержимое буфера RX2164: " + buf.get(0) + " " + buf.get(1) + " " + buf.get(2) + " " + buf.get(3) + " " + buf.get(4) + " " + buf.get(5) + " " + buf.get(6)
+                                + " " + buf.get(7));
+
+                        byte channel = (byte)(buf.get(1) + 1);
+                        byte action = buf.get(2);
+                        byte dimmerValue = buf.get(4);
+
+                        // Записываем в temp буффер
+                        tmpBuf = buf;
+                    }
+
+                    try {
+                        Thread.sleep(READ_UPDATE_DELAY_MS);
+                    } catch (InterruptedException e) {
+                        LOGGER.error("Ошибка в процессе сна");
+                        e.printStackTrace();
+                    }
+
                 }
             }
-        });
+        }).start();
     }
 
 
