@@ -22,6 +22,8 @@ import org.usb4java.Context;
 import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
+import ru.iris.noolite4j.CommandType;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -81,7 +83,7 @@ public class PC11xx {
 
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 0x30);
-        buf.put((byte) 2);
+        buf.put((byte) CommandType.TURN_ON.getCode());
         buf.position(4);
         buf.put(channel);
 
@@ -106,7 +108,7 @@ public class PC11xx {
 
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 0x30);
-        buf.put((byte) 0);
+        buf.put((byte) CommandType.TURN_OFF.getCode());
         buf.position(4);
         buf.put(channel);
 
@@ -129,7 +131,7 @@ public class PC11xx {
 
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 0x30);
-        buf.put((byte) 6);
+        buf.put((byte) CommandType.SET_LEVEL.getCode());
         buf.put((byte) 1);
 
         if (level > 100)
@@ -167,7 +169,7 @@ public class PC11xx {
 
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 0x30);
-        buf.put((byte) 15);
+        buf.put((byte) CommandType.BIND.getCode());
         buf.position(4);
         buf.put(channel);
 
@@ -186,7 +188,7 @@ public class PC11xx {
 
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 0x30);
-        buf.put((byte) 9);
+        buf.put((byte) CommandType.UNBIND.getCode());
         buf.position(4);
         buf.put(channel);
 
