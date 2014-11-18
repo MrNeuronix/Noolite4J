@@ -260,16 +260,12 @@ public class RX2164 {
                                  * размазана по 2 байтам
                                  */
 
-                                byte[] data = new byte[]{buf.get(4), buf.get(5), buf.get(6), buf.get(7)};
+                                int temp = ((buf.get(5) & 0x0f) << 8) + buf.get(4);
 
-                                int value = ((data[1] & 0x0f) << 8) + data[0];
-
-                                if (value >= 0x800)
+                                if (temp >= 0x800)
                                 {
-                                    value = value - 0x1000;
+                                    temp = temp - 0x1000;
                                 }
-
-                                double temp = value / 10;
 
                                 // Состояни батареи
                                 //notification.addData("battery", String.valueOf();
