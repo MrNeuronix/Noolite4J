@@ -22,6 +22,7 @@ import org.usb4java.Context;
 import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
+import ru.iris.noolite4j.CommandType;
 import ru.iris.noolite4j.watchers.Notification;
 import ru.iris.noolite4j.watchers.Watcher;
 
@@ -151,6 +152,7 @@ public class RX2164 {
                         LOGGER.info("Получена новая команда для RX2164");
                         LOGGER.info("Значение TOGL: " + togl);
                         LOGGER.info("Канал: " + channel);
+                        LOGGER.info("Команда: "+ CommandType.getValue(action).name());
 
                         LOGGER.info("Содержимое буфера RX2164: " + buf.get(0) + " " + buf.get(1) + " " + buf.get(2) + " " + buf.get(3) + " " + buf.get(4) + " " + buf.get(5) + " " + buf.get(6)
                                 + " " + buf.get(7));
@@ -168,6 +170,4 @@ public class RX2164 {
             }
         }).start();
     }
-
-
 }

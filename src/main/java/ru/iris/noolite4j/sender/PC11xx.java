@@ -42,11 +42,15 @@ public class PC11xx {
     protected short availableChannels = 8;
     protected byte sendRepeat = 1;
 
+    /**
+     * Пытается найти и открыть HID-устройство PC11xx
+     * @throws LibUsbException
+     */
     public void open() throws LibUsbException {
 
         LOGGER.info("Открывается устройство PC11xx");
 
-        // Инициализируем контекст
+        // Инициализируем контекст libusb
         int result = LibUsb.init(context);
         if (result != LibUsb.SUCCESS)
         {
@@ -62,11 +66,35 @@ public class PC11xx {
         }
     }
 
+    /**
+     * Закрывает HID-устройство
+     */
     public void close() {
         LOGGER.info("Закрывается устройство PC11xx");
         LibUsb.exit(context);
     }
 
+    /**
+     * Возвращает количество повторов посылки команды
+     * @return количество повторов
+     */
+    public byte getSendRepeat() {
+        return sendRepeat;
+    }
+
+    /**
+     * Устанавливает количество повторов посылки команды
+     * @param sendRepeat количество повторов
+     */
+    public void setSendRepeat(byte sendRepeat) {
+        this.sendRepeat = sendRepeat;
+    }
+
+    /**
+     * Включает силовой блок на определеном канале
+     * @param channel канал включаемой нагрузки
+     * @return успешно или нет
+     */
     public boolean turnOn(byte channel)
     {
         if(channel >= availableChannels) {
@@ -92,6 +120,11 @@ public class PC11xx {
         return true;
     }
 
+    /**
+     * Выключает силовой блок на определеном канале
+     * @param channel канал выключаемой нагрузки
+     * @return успешно или нет
+     */
     public boolean turnOff(byte channel)
     {
         if(channel >= availableChannels) {
@@ -117,6 +150,11 @@ public class PC11xx {
         return true;
     }
 
+    /**
+     * Устанавливает уровень на диммируемом силовом блоке на определеном канале
+     * @param channel канал диммера
+     * @return успешно или нет
+     */
     public boolean setLevel(byte channel, byte level)
     {
         if(channel >= availableChannels) {
@@ -160,6 +198,11 @@ public class PC11xx {
         return true;
     }
 
+    /**
+     * Привзяка устройства к PC11xx на определенный канал
+     * @param channel канал, на который будет привязано устройство
+     * @return успешно или нет
+     */
     public boolean bindChannel(byte channel)
     {
         if(channel >= availableChannels) {
@@ -173,12 +216,17 @@ public class PC11xx {
         buf.position(4);
         buf.put(channel);
 
-        LOGGER.info("Включен режим привязки для канала " + (channel+1));
+        LOGGER.info("Включен режим привязки для канала " + (channel + 1));
 
         writeToHID(buf);
         return true;
     }
 
+    /**
+     * Отвзяка устройства PC11xx от определенного канала
+     * @param channel канал, от которого будет отвязано устройство
+     * @return успешно или нет
+     */
     public boolean unbindChannel(byte channel)
     {
         if(channel >= availableChannels) {
@@ -192,7 +240,7 @@ public class PC11xx {
         buf.position(4);
         buf.put(channel);
 
-        LOGGER.info("Включен режим отвязки для канала " + (channel+1));
+        LOGGER.info("Включен режим отвязки для канала " + (channel + 1));
 
         writeToHID(buf);
         return true;

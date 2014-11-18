@@ -46,4 +46,13 @@ public enum CommandType {
     {
         return code;
     }
+
+    public static CommandType getValue(byte value) {
+        for(CommandType e: CommandType.values()) {
+            if(e.getCode() == value) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
