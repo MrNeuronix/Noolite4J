@@ -289,21 +289,21 @@ public class RX2164 {
 
                                 // Берем 12 бит - это температура
                                 int temp = 0;
-                                for(int i = 0 ; i < 12; i++) {
+                                for(int i = 0 ; i <= 11; i++) {
                                     if(bits.get(i)) {
                                         temp |= (1 << i);
                                     }
                                 }
 
                                 // Если 12 бит - единица, то это отрицательная температура
-                                //if(bits.get(3))
+                                //if(bits.get(11))
                                 //{
                                 //    temp = -(4096-temp);
                                 //}
 
                                 // Тип датчика
                                 String sensType = "";
-                                for(int i = 12 ; i < 15; i++) {
+                                for(int i = 12 ; i <= 14; i++) {
                                     if(bits.get(i)) {
                                         sensType += "1";
                                     }
