@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.iris.noolite4j;
+package ru.iris.noolite4j.watchers;
 
 public enum CommandType {
     TURN_OFF(0),

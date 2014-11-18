@@ -22,12 +22,10 @@ import org.usb4java.Context;
 import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
-import ru.iris.noolite4j.CommandType;
-import ru.iris.noolite4j.watchers.DataFormat;
-import ru.iris.noolite4j.watchers.Notification;
-import ru.iris.noolite4j.watchers.Watcher;
+import ru.iris.noolite4j.watchers.*;
 
 import java.nio.ByteBuffer;
+import java.util.BitSet;
 
 /**
  * Приемник комманд RX2164
@@ -195,7 +193,7 @@ public class RX2164 {
                             case SET_LEVEL:
                                 notification.setType(CommandType.SET_LEVEL);
                                 notification.addData("level", String.valueOf(buf.get(4)));
-                                LOGGER.debug("Уровень устроства: " + buf.get(4));
+                                LOGGER.debug("Уровень устройства: " + buf.get(4));
                                 watcher.onNotification(notification);
                                 break;
                             case SWITCH:
@@ -256,6 +254,86 @@ public class RX2164 {
                                 break;
                             case TEMP_HUMI:
                                 notification.setType(CommandType.TEMP_HUMI);
+
+                                /**
+                                 * Информация о температуре, типе датчика и состоянии батареи
+                                 * размазана по 2 байтам
+                                 * Читать следует в обратном порядке
+                                 */
+
+                                BitSet bits = new BitSet(16);
+
+                                int pos = 15;
+
+                                // читаем 2 байт
+                                for (int i = 7; i >= 0; i--)
+                                {
+                                    if ((buf.get(5) & (1 << i)) > 0)
+                                    {
+                                        bits.set(pos);
+                                    }
+
+                                    pos--;
+                                }
+
+                                // читаем 1 байт
+                                for (int i = 7; i >= 0; i--)
+                                {
+                                    if ((buf.get(4) & (1 << i)) > 0)
+                                    {
+                                        bits.set(pos);
+                                    }
+
+                                    pos--;
+                                }
+
+                                // Берем 12 бит - это температура
+                                int temp = 0;
+                                for(int i = 0 ; i < 12; i++) {
+                                    if(bits.get(i)) {
+                                        temp |= (1 << i);
+                                    }
+                                }
+
+                                // Если 12 бит - единица, то это отрицательная температура
+                                //if(bits.get(3))
+                                //{
+                                //    temp = -(4096-temp);
+                                //}
+
+                                // Тип датчика
+                                String sensType = "";
+                                for(int i = 12 ; i < 15; i++) {
+                                    if(bits.get(i)) {
+                                        sensType += "1";
+                                    }
+                                    else
+                                    {
+                                        sensType += "0";
+                                    }
+                                }
+
+                                // Состояни батареи
+                                notification.addData("battery", String.valueOf(bits.get(15)));
+
+                                // Температура
+                                notification.addData("temp", String.valueOf(temp));
+
+                                // Тип сенсора
+                                //notification.setSensorType(SensorType.values()[buf.get(4)]);
+                                notification.addData("sensorType", sensType);
+
+                                /**
+                                 * В третьем байте данных хранится влажность
+                                 */
+                                notification.addData("humi", String.valueOf(buf.get(6)));
+
+                                /**
+                                 * В четвертом байте данных хранятся данные о состоянии аналогового датчика
+                                 * По умолчанию - 255
+                                 */
+                                notification.addData("analog", String.valueOf(buf.get(7) & 0xff));
+
                                 watcher.onNotification(notification);
                                 break;
 

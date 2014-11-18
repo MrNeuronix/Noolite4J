@@ -16,8 +16,6 @@
 
 package ru.iris.noolite4j.watchers;
 
-import ru.iris.noolite4j.CommandType;
-
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +25,7 @@ public class Notification
     private ByteBuffer buffer;
     private CommandType type;
     private DataFormat dataFormat;
+    private SensorType sensorType = SensorType.NON_SENSOR;
     private byte channel;
     private Map<String, String> data = new HashMap<String, String>();
 
@@ -52,6 +51,14 @@ public class Notification
 
     public void setDataFormat(DataFormat dataFormat) {
         this.dataFormat = dataFormat;
+    }
+
+    public SensorType getSensorType() {
+        return sensorType;
+    }
+
+    public void setSensorType(SensorType sensorType) {
+        this.sensorType = sensorType;
     }
 
     public byte getChannel() {

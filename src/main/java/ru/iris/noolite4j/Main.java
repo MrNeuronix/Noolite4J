@@ -18,7 +18,9 @@ package ru.iris.noolite4j;
 
 import ru.iris.noolite4j.receiver.RX2164;
 import ru.iris.noolite4j.sender.PC1116;
+import ru.iris.noolite4j.watchers.CommandType;
 import ru.iris.noolite4j.watchers.Notification;
+import ru.iris.noolite4j.watchers.SensorType;
 import ru.iris.noolite4j.watchers.Watcher;
 
 public class Main {
@@ -35,6 +37,35 @@ public class Main {
                System.out.println("Устройство: " + notification.getChannel());
                System.out.println("Команда: " + notification.getType().name());
                System.out.println("Формат данных к команде: " + notification.getDataFormat().name());
+
+               // Передаются данные с датчика
+               if(notification.getType().equals(CommandType.TEMP_HUMI))
+               {
+                   //System.out.println("Тип датчика: " + notification.getSensorType().name());
+                   System.out.println("Температура: " + notification.getValue("temp"));
+                   System.out.println("Влажность: " + notification.getValue("humi"));
+                   System.out.println("Тип датчика: " + notification.getValue("sensorType"));
+                   System.out.println("Состояние батареи: " + notification.getValue("battery"));
+
+                   //if(notification.getSensorType().equals(SensorType.PT111))
+                   //{
+                   //   System.out.println("Обнаружен датчик температуры и влажности");
+
+
+                   //}
+                   //else if(notification.getSensorType().equals(SensorType.PT112))
+                   //{
+                   //    System.out.println("Обнаружен датчик температуры");
+
+
+                   //}
+                   //else if(notification.getSensorType().equals(SensorType.PT112))
+                   //{
+                   //    System.out.println("Обнаружен датчик движения");
+
+
+                   //}
+               }
            }
        };
 

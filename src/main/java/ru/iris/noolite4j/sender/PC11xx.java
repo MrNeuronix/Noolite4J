@@ -22,7 +22,7 @@ import org.usb4java.Context;
 import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
-import ru.iris.noolite4j.CommandType;
+import ru.iris.noolite4j.watchers.CommandType;
 
 import java.nio.ByteBuffer;
 
