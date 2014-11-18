@@ -260,12 +260,7 @@ public class RX2164 {
                                  * размазана по 2 байтам
                                  */
 
-                                byte[] data = new byte[]{};
-
-                                if(dataFormat == DataFormat.FOUR_BYTE.ordinal())
-                                    data = new byte[]{buf.get(4), buf.get(5), buf.get(6), buf.get(7)};
-                                if(dataFormat == DataFormat.ONE_BYTE.ordinal())
-                                    data = new byte[]{buf.get(4)};
+                                byte[] data = new byte[]{buf.get(4), buf.get(5), buf.get(6), buf.get(7)};
 
                                 int value = ((data[1] & 0x0f) << 8) + data[0];
 
