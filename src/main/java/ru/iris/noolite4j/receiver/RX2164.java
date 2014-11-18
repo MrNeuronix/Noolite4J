@@ -23,6 +23,7 @@ import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
 import ru.iris.noolite4j.CommandType;
+import ru.iris.noolite4j.watchers.DataFormat;
 import ru.iris.noolite4j.watchers.Notification;
 import ru.iris.noolite4j.watchers.Watcher;
 
@@ -61,7 +62,7 @@ public class RX2164 {
      */
     public void open() throws LibUsbException {
 
-        LOGGER.info("Открывается устройство RX2164");
+        LOGGER.debug("Открывается устройство RX2164");
 
         // Инициализируем контекст
         int result = LibUsb.init(context);
@@ -111,7 +112,7 @@ public class RX2164 {
      * Завершение работы
      */
     public void close() {
-        LOGGER.info("Закрывается устройство RX2164");
+        LOGGER.debug("Закрывается устройство RX2164");
         shutdown = true;
         LibUsb.exit(context);
     }
@@ -121,7 +122,7 @@ public class RX2164 {
      */
     public void start()
     {
-        LOGGER.info("Запускается процесс получения данных на устройстве RX2164");
+        LOGGER.debug("Запускается процесс получения данных на устройстве RX2164");
 
         new Thread(new Runnable() {
             @Override
@@ -144,24 +145,132 @@ public class RX2164 {
                      */
                     int togl = buf.get(0) & 63;
 
+                    /**
+                     * Получена новая команда
+                     */
                     if (togl != tmpTogl) {
 
-                        byte channel = (byte)(buf.get(1) + 1);
+                        Notification notification = new Notification();
+
+                        notification.setBuffer(buf);
+
+                        byte channel = (byte) (buf.get(1) + 1);
                         byte action = buf.get(2);
+                        byte dataFormat = buf.get(3);
 
-                        LOGGER.info("Получена новая команда для RX2164");
-                        LOGGER.info("Значение TOGL: " + togl);
-                        LOGGER.info("Канал: " + channel);
-                        LOGGER.info("Команда: "+ CommandType.getValue(action).name());
+                        LOGGER.debug("Получена новая команда для RX2164");
+                        LOGGER.debug("Значение TOGL: " + togl);
+                        LOGGER.debug("Канал: " + channel);
+                        LOGGER.debug("Команда: " + CommandType.getValue(action).name());
+                        LOGGER.debug("Канал: " + channel);
 
-                        LOGGER.info("Содержимое буфера RX2164: " + buf.get(0) + " " + buf.get(1) + " " + buf.get(2) + " " + buf.get(3) + " " + buf.get(4) + " " + buf.get(5) + " " + buf.get(6)
-                                + " " + buf.get(7));
+                        if (dataFormat == DataFormat.NO_DATA.ordinal()) {
+                            LOGGER.debug("Количество данных к команде: нет");
+                            notification.setDataFormat(DataFormat.NO_DATA);
+                        } else if (dataFormat == DataFormat.ONE_BYTE.ordinal()) {
+                            LOGGER.debug("Количество данных к команде: 1 байт");
+                            notification.setDataFormat(DataFormat.ONE_BYTE);
+                        }
+                        else if (dataFormat == DataFormat.TWO_BYTE.ordinal()) {
+                            LOGGER.debug("Количество данных к команде: 2 байта");
+                            notification.setDataFormat(DataFormat.TWO_BYTE);
+                        }
+                        else if (dataFormat == DataFormat.FOUR_BYTE.ordinal()) {
+                            LOGGER.debug("Количество данных к команде: 4 байта");
+                            notification.setDataFormat(DataFormat.FOUR_BYTE);
+                        }
+
+                        notification.setChannel(channel);
+
+                        switch (CommandType.getValue(action))
+                        {
+                            case TURN_ON:
+                                notification.setType(CommandType.TURN_ON);
+                                watcher.onNotification(notification);
+                                break;
+                            case TURN_OFF:
+                                notification.setType(CommandType.TURN_OFF);
+                                watcher.onNotification(notification);
+                                break;
+                            case SET_LEVEL:
+                                notification.setType(CommandType.SET_LEVEL);
+                                notification.addData("level", String.valueOf(buf.get(4)));
+                                LOGGER.debug("Уровень устроства: " + buf.get(4));
+                                watcher.onNotification(notification);
+                                break;
+                            case SWITCH:
+                                notification.setType(CommandType.SWITCH);
+                                watcher.onNotification(notification);
+                                break;
+                            case SLOW_TURN_ON:
+                                notification.setType(CommandType.SLOW_TURN_ON);
+                                watcher.onNotification(notification);
+                                break;
+                            case SLOW_TURN_OFF:
+                                notification.setType(CommandType.SLOW_TURN_OFF);
+                                watcher.onNotification(notification);
+                                break;
+                            case STOP_DIM_BRIGHT:
+                                notification.setType(CommandType.STOP_DIM_BRIGHT);
+                                watcher.onNotification(notification);
+                                break;
+                            case REVERT_SLOW_TURN:
+                                notification.setType(CommandType.REVERT_SLOW_TURN);
+                                watcher.onNotification(notification);
+                                break;
+                            case RUN_SCENE:
+                                notification.setType(CommandType.RUN_SCENE);
+                                watcher.onNotification(notification);
+                                break;
+                            case RECORD_SCENE:
+                                notification.setType(CommandType.RECORD_SCENE);
+                                watcher.onNotification(notification);
+                                break;
+                            case BIND:
+                                notification.setType(CommandType.BIND);
+                                watcher.onNotification(notification);
+                                break;
+                            case UNBIND:
+                                notification.setType(CommandType.UNBIND);
+                                watcher.onNotification(notification);
+                                break;
+                            case SLOW_RGB_CHANGE:
+                                notification.setType(CommandType.SLOW_RGB_CHANGE);
+                                watcher.onNotification(notification);
+                                break;
+                            case SWITCH_COLOR:
+                                notification.setType(CommandType.SWITCH_COLOR);
+                                watcher.onNotification(notification);
+                                break;
+                            case SWITCH_MODE:
+                                notification.setType(CommandType.SWITCH_MODE);
+                                watcher.onNotification(notification);
+                                break;
+                            case SWITCH_SPEED_MODE:
+                                notification.setType(CommandType.SWITCH_SPEED_MODE);
+                                watcher.onNotification(notification);
+                                break;
+                            case BATTERY_LOW:
+                                notification.setType(CommandType.BATTERY_LOW);
+                                watcher.onNotification(notification);
+                                break;
+                            case TEMP_HUMI:
+                                notification.setType(CommandType.TEMP_HUMI);
+                                watcher.onNotification(notification);
+                                break;
+
+                            default:
+                                LOGGER.error("Неизвестная команда: " + action);
+                        }
                     }
 
+                    /**
+                     * Спим
+                     */
                     try {
                         Thread.sleep(READ_UPDATE_DELAY_MS);
                     } catch (InterruptedException e) {
-                        LOGGER.error("Ошибка в процессе сна");
+                        LOGGER.error("Ошибка: " + e.getMessage());
                         e.printStackTrace();
                     }
 

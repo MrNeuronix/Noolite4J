@@ -16,6 +16,67 @@
 
 package ru.iris.noolite4j.watchers;
 
-public class Notification {
-    public int i;
+import ru.iris.noolite4j.CommandType;
+
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Notification
+{
+    private ByteBuffer buffer;
+    private CommandType type;
+    private DataFormat dataFormat;
+    private byte channel;
+    private Map<String, String> data = new HashMap<String, String>();
+
+    public ByteBuffer getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(ByteBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    public CommandType getType() {
+        return type;
+    }
+
+    public void setType(CommandType type) {
+        this.type = type;
+    }
+
+    public DataFormat getDataFormat() {
+        return dataFormat;
+    }
+
+    public void setDataFormat(DataFormat dataFormat) {
+        this.dataFormat = dataFormat;
+    }
+
+    public byte getChannel() {
+        return channel;
+    }
+
+    public void setChannel(byte channel) {
+        this.channel = channel;
+    }
+
+    public Map<String, String> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, String> data) {
+        this.data = data;
+    }
+
+    public void addData(String key, String value)
+    {
+        data.put(key, value);
+    }
+
+    public String getValue(String key)
+    {
+        return data.get(key);
+    }
 }

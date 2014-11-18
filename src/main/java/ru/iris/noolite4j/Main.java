@@ -32,6 +32,9 @@ public class Main {
            @Override
            public void onNotification(Notification notification) {
                System.out.println("RX2164 получил команду: ");
+               System.out.println("Устройство: " + notification.getChannel());
+               System.out.println("Команда: " + notification.getType().name());
+               System.out.println("Формат данных к команде: " + notification.getDataFormat().name());
            }
        };
 
