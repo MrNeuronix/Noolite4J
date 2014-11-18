@@ -258,70 +258,33 @@ public class RX2164 {
                                 /**
                                  * Информация о температуре, типе датчика и состоянии батареи
                                  * размазана по 2 байтам
-                                 * Читать следует в обратном порядке
                                  */
 
-                                BitSet bits = new BitSet(16);
+                                byte[] data = new byte[]{};
 
-                                int pos = 0;
+                                if(dataFormat == DataFormat.FOUR_BYTE.ordinal())
+                                    data = new byte[]{buf.get(4), buf.get(5), buf.get(6), buf.get(7)};
+                                if(dataFormat == DataFormat.ONE_BYTE.ordinal())
+                                    data = new byte[]{buf.get(4)};
 
-                                // читаем 2 байт
-                                for (int i = 0; i >= 7; i++)
+                                int value = ((data[1] & 0x0f) << 8) + data[0];
+
+                                if (value >= 0x800)
                                 {
-                                    if ((buf.get(5) & (1 << i)) > 0)
-                                    {
-                                        bits.set(pos);
-                                    }
-
-                                    pos++;
+                                    value = value - 0x1000;
                                 }
 
-                                // читаем 1 байт
-                                for (int i = 0; i >= 7; i++)
-                                {
-                                    if ((buf.get(4) & (1 << i)) > 0)
-                                    {
-                                        bits.set(pos);
-                                    }
-
-                                    pos++;
-                                }
-
-                                // Берем 12 бит - это температура
-                                int temp = 0;
-                                for(int i = 4 ; i <= 15; i++) {
-                                    if(bits.get(i)) {
-                                        temp |= (1 << i);
-                                    }
-                                }
-
-                                // Если 12 бит - единица, то это отрицательная температура
-                                //if(bits.get(4))
-                                //{
-                                //    temp = -(4096-temp);
-                                //}
-
-                                // Тип датчика
-                                String sensType = "";
-                                for(int i = 1 ; i <= 3; i++) {
-                                    if(bits.get(i)) {
-                                        sensType += "1";
-                                    }
-                                    else
-                                    {
-                                        sensType += "0";
-                                    }
-                                }
+                                double temp = value / 10;
 
                                 // Состояни батареи
-                                notification.addData("battery", String.valueOf(bits.get(0)));
+                                //notification.addData("battery", String.valueOf();
 
                                 // Температура
                                 notification.addData("temp", String.valueOf(temp));
 
                                 // Тип сенсора
                                 //notification.setSensorType(SensorType.values()[buf.get(4)]);
-                                notification.addData("sensorType", sensType);
+                                //notification.addData("sensorType", sensType);
 
                                 /**
                                  * В третьем байте данных хранится влажность
@@ -353,6 +316,7 @@ public class RX2164 {
                     }
 
                     tmpTogl = togl;
+                    buf.clear();
                 }
             }
         }).start();

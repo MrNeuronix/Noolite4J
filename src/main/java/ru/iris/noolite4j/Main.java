@@ -43,9 +43,13 @@ public class Main {
                {
                    //System.out.println("Тип датчика: " + notification.getSensorType().name());
                    System.out.println("Температура: " + notification.getValue("temp"));
-                   System.out.println("Влажность: " + notification.getValue("humi"));
-                   System.out.println("Тип датчика: " + notification.getValue("sensorType"));
-                   System.out.println("Состояние батареи: " + notification.getValue("battery"));
+                   //System.out.println("Влажность: " + notification.getValue("humi"));
+                   //System.out.println("Тип датчика: " + notification.getValue("sensorType"));
+                   //System.out.println("Состояние батареи: " + notification.getValue("battery"));
+                   System.out.println("Бинарная строка 0: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(4) & 0xFF)).replace(' ', '0'));
+                   System.out.println("Бинарная строка 1: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(5) & 0xFF)).replace(' ', '0'));
+                   System.out.println("Бинарная строка 2: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(6) & 0xFF)).replace(' ', '0'));
+                   System.out.println("Бинарная строка 3: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(7) & 0xFF)).replace(' ', '0'));
 
                    //if(notification.getSensorType().equals(SensorType.PT111))
                    //{
