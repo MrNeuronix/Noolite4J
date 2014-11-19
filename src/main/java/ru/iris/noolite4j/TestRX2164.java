@@ -53,10 +53,6 @@ public class TestRX2164 {
                    {
                        System.out.println("Обнаружен датчик температуры");
                    }
-                   else if(sensor.equals(SensorType.PT112))
-                   {
-                       System.out.println("Обнаружен датчик движения");
-                   }
                }
            }
        };
