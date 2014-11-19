@@ -35,9 +35,9 @@ public class TestRX2164 {
                System.out.println("Формат данных к команде: " + notification.getDataFormat().name());
 
                // Передаются данные с датчика
-               if(notification.getType().equals(CommandType.TEMP_HUMI))
+               if(notification.getType() == CommandType.TEMP_HUMI)
                {
-                   SensorType sensor = (SensorType)notification.getValue("sensorType");
+                   SensorType sensor = (SensorType)notification.getValue("sensortype");
                    BatteryState battery = (BatteryState)notification.getValue("battery");
 
                    System.out.println("Температура: " + notification.getValue("temp"));
@@ -45,11 +45,11 @@ public class TestRX2164 {
                    System.out.println("Тип датчика: " + sensor.name());
                    System.out.println("Состояние батареи: " + battery.name());
 
-                   if(sensor.equals(SensorType.PT111))
+                   if(sensor == SensorType.PT111)
                    {
-                      System.out.println("Обнаружен датчик температуры и влажности");
+                       System.out.println("Обнаружен датчик температуры и влажности");
                    }
-                   else if(sensor.equals(SensorType.PT112))
+                   else if(sensor == SensorType.PT112)
                    {
                        System.out.println("Обнаружен датчик температуры");
                    }
