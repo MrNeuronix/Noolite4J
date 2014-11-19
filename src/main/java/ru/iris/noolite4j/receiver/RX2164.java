@@ -150,8 +150,9 @@ public class RX2164 {
 
                     /**
                      * Получена новая команда
+                     * TOGL может быть 0
                      */
-                    if (togl != tmpTogl) {
+                    if (togl == 0 || togl != tmpTogl) {
 
                         Notification notification = new Notification();
 
@@ -163,7 +164,6 @@ public class RX2164 {
 
                         LOGGER.debug("Получена новая команда для RX2164");
                         LOGGER.debug("Значение TOGL: " + togl);
-                        LOGGER.debug("Канал: " + channel);
                         LOGGER.debug("Команда: " + CommandType.getValue(action).name());
                         LOGGER.debug("Канал: " + channel);
 
