@@ -270,7 +270,7 @@ public class RX2164 {
                                 double temp = (double)(intTemp / 10);
 
                                 // Состояни батареи
-                                notification.addData("battery", (buf.get(5) >> 7) & 1);
+                                notification.addData("battery", BatteryState.values()[(buf.get(5) >> 7) & 1]);
 
                                 // Температура
                                 notification.addData("temp", temp);

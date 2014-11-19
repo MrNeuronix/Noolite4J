@@ -17,10 +17,7 @@
 package ru.iris.noolite4j;
 
 import ru.iris.noolite4j.receiver.RX2164;
-import ru.iris.noolite4j.watchers.CommandType;
-import ru.iris.noolite4j.watchers.Notification;
-import ru.iris.noolite4j.watchers.SensorType;
-import ru.iris.noolite4j.watchers.Watcher;
+import ru.iris.noolite4j.watchers.*;
 
 public class TestRX2164 {
 
@@ -41,11 +38,12 @@ public class TestRX2164 {
                if(notification.getType().equals(CommandType.TEMP_HUMI))
                {
                    SensorType sensor = (SensorType)notification.getValue("sensorType");
+                   BatteryState battery = (BatteryState)notification.getValue("battery");
 
                    System.out.println("Температура: " + notification.getValue("temp"));
                    System.out.println("Влажность: " + notification.getValue("humi"));
                    System.out.println("Тип датчика: " + sensor.name());
-                   System.out.println("Состояние батареи: " + notification.getValue("battery"));
+                   System.out.println("Состояние батареи: " + battery.name());
 
                    if(notification.getSensorType().equals(SensorType.PT111))
                    {
