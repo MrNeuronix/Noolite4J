@@ -281,7 +281,7 @@ public class RX2164 {
                                 /**
                                  * В третьем байте данных хранится влажность
                                  */
-                                notification.addData("humi", buf.get(6));
+                                notification.addData("humi", buf.get(6) & 0xff);
 
                                 /**
                                  * В четвертом байте данных хранятся данные о состоянии аналогового датчика
