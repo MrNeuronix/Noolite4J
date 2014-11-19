@@ -260,22 +260,24 @@ public class RX2164 {
                                  * размазана по 2 байтам
                                  */
 
-                                int temp = ((buf.get(5) & 0x0f) << 8) + buf.get(4);
+                                int intTemp = ((buf.get(5) & 0x0f) << 8) + (buf.get(4) & 0xff);
 
-                                if (temp >= 0x800)
+                                if (intTemp >= 0x800)
                                 {
-                                    temp = temp - 0x1000;
+                                    intTemp = intTemp - 0x1000;
                                 }
 
+                                // Приводим к градусам Цельсия
+                                double temp = (double)(intTemp / 10);
+
                                 // Состояни батареи
-                                //notification.addData("battery", String.valueOf();
+                                notification.addData("battery", String.valueOf((buf.get(5) >> 7) & 1));
 
                                 // Температура
                                 notification.addData("temp", String.valueOf(temp));
 
                                 // Тип сенсора
-                                //notification.setSensorType(SensorType.values()[buf.get(4)]);
-                                //notification.addData("sensorType", sensType);
+                                notification.setSensorType(SensorType.values()[((buf.get(5) >> 4) & 7)]);
 
                                 /**
                                  * В третьем байте данных хранится влажность
@@ -284,7 +286,7 @@ public class RX2164 {
 
                                 /**
                                  * В четвертом байте данных хранятся данные о состоянии аналогового датчика
-                                 * По умолчанию - 255
+                                 * По умолчанию - unsigned byte (255)
                                  */
                                 notification.addData("analog", String.valueOf(buf.get(7) & 0xff));
 

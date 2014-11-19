@@ -48,7 +48,7 @@ public class PC11xx {
      */
     public void open() throws LibUsbException {
 
-        LOGGER.info("Открывается устройство PC11xx");
+        LOGGER.debug("Открывается устройство PC11xx");
 
         // Инициализируем контекст libusb
         int result = LibUsb.init(context);
@@ -70,7 +70,7 @@ public class PC11xx {
      * Закрывает HID-устройство
      */
     public void close() {
-        LOGGER.info("Закрывается устройство PC11xx");
+        LOGGER.debug("Закрывается устройство PC11xx");
         LibUsb.exit(context);
     }
 
@@ -102,7 +102,7 @@ public class PC11xx {
             return false;
         }
 
-        LOGGER.info("Включается устройство на канале {}", (channel+1));
+        LOGGER.debug("Включается устройство на канале {}", (channel+1));
 
         /**
          * Отсчет каналов начинается с 0
@@ -132,7 +132,7 @@ public class PC11xx {
             return false;
         }
 
-        LOGGER.info("Выключается устройство на канале {}", (channel+1));
+        LOGGER.debug("Выключается устройство на канале {}", (channel+1));
 
         /**
          * Отсчет каналов начинается с 0
@@ -174,17 +174,17 @@ public class PC11xx {
 
         if (level > 100)
         {
-            LOGGER.info("Включается устройство на канале " + (channel+1));
+            LOGGER.debug("Включается устройство на канале " + (channel+1));
             level = 100;
         }
         else if (level < 0)
         {
-            LOGGER.info("Выключается устройство на канале " + (channel+1));
+            LOGGER.debug("Выключается устройство на канале " + (channel+1));
             level = 0;
         }
         else
         {
-            LOGGER.info("Устанавливается уровень {} на канале {}", level, (channel+1));
+            LOGGER.debug("Устанавливается уровень {} на канале {}", level, (channel+1));
         }
 
         buf.position(5);
@@ -216,7 +216,7 @@ public class PC11xx {
         buf.position(4);
         buf.put(channel);
 
-        LOGGER.info("Включен режим привязки для канала " + (channel + 1));
+        LOGGER.debug("Включен режим привязки для канала " + (channel + 1));
 
         writeToHID(buf);
         return true;
@@ -240,7 +240,7 @@ public class PC11xx {
         buf.position(4);
         buf.put(channel);
 
-        LOGGER.info("Включен режим отвязки для канала " + (channel + 1));
+        LOGGER.debug("Включен режим отвязки для канала " + (channel + 1));
 
         writeToHID(buf);
         return true;

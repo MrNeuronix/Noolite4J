@@ -33,6 +33,7 @@ public class Main {
        Watcher watcher = new Watcher() {
            @Override
            public void onNotification(Notification notification) {
+               System.out.println("----------------------------------");
                System.out.println("RX2164 получил команду: ");
                System.out.println("Устройство: " + notification.getChannel());
                System.out.println("Команда: " + notification.getType().name());
@@ -44,31 +45,27 @@ public class Main {
                    //System.out.println("Тип датчика: " + notification.getSensorType().name());
                    System.out.println("Температура: " + notification.getValue("temp"));
                    System.out.println("Влажность: " + notification.getValue("humi"));
-                   //System.out.println("Тип датчика: " + notification.getValue("sensorType"));
-                   //System.out.println("Состояние батареи: " + notification.getValue("battery"));
-                   System.out.println("Бинарная строка 0: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(4) & 0xFF)).replace(' ', '0'));
-                   System.out.println("Бинарная строка 1: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(5) & 0xFF)).replace(' ', '0'));
-                   System.out.println("Бинарная строка 2: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(6) & 0xFF)).replace(' ', '0'));
-                   System.out.println("Бинарная строка 3: " + String.format("%8s", Integer.toBinaryString(notification.getBuffer().get(7) & 0xFF)).replace(' ', '0'));
+                   System.out.println("Тип датчика: " + notification.getValue("sensorType"));
+                   System.out.println("Состояние батареи: " + notification.getValue("battery"));
 
-                   //if(notification.getSensorType().equals(SensorType.PT111))
-                   //{
-                   //   System.out.println("Обнаружен датчик температуры и влажности");
+                   if(notification.getSensorType().equals(SensorType.PT111))
+                   {
+                      System.out.println("Обнаружен датчик температуры и влажности");
 
 
-                   //}
-                   //else if(notification.getSensorType().equals(SensorType.PT112))
-                   //{
-                   //    System.out.println("Обнаружен датчик температуры");
+                   }
+                   else if(notification.getSensorType().equals(SensorType.PT112))
+                   {
+                       System.out.println("Обнаружен датчик температуры");
 
 
-                   //}
-                   //else if(notification.getSensorType().equals(SensorType.PT112))
-                   //{
-                   //    System.out.println("Обнаружен датчик движения");
+                   }
+                   else if(notification.getSensorType().equals(SensorType.PT112))
+                   {
+                       System.out.println("Обнаружен датчик движения");
 
 
-                   //}
+                   }
                }
            }
        };
