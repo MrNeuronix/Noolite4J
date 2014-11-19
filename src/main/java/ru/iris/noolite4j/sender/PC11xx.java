@@ -23,6 +23,7 @@ import org.usb4java.DeviceHandle;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
 import ru.iris.noolite4j.watchers.CommandType;
+import ru.iris.noolite4j.watchers.DataFormat;
 
 import java.nio.ByteBuffer;
 
@@ -119,6 +120,335 @@ public class PC11xx {
 
         buf.position(1);
         buf.put((byte) CommandType.TURN_ON.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Медленно включает диммируемую нагрузку
+     * @param channel канал включаемой нагрузки
+     * @return успешно или нет
+     */
+    public boolean slowTurnOn(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Включается (медленно) устройство на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SLOW_TURN_ON.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Медленно выключает диммируемую нагрузку
+     * @param channel канал выключаемой нагрузки
+     * @return успешно или нет
+     */
+    public boolean slowTurnOff(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Выключается (медленно) устройство на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SLOW_TURN_OFF.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * переключает нагрузку (вкл/выкл)
+     * @param channel канал переключаемой нагрузки
+     * @return успешно или нет
+     */
+    public boolean toggle(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Переключается устройство на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SWITCH.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Запускает плавное изменение яркости в обратном направлении
+     * @param channel канал нагрузки
+     * @return успешно или нет
+     */
+    public boolean revertSlowTurn(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Плавное изменение яркости в обратном направлении на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.REVERT_SLOW_TURN.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Устанавливает яркость для кажого цвета RGB-контроллера
+     * @param channel канал нагрузки
+     * @param R яркость канала 1
+     * @param G яркость канала 2
+     * @param B яркость канала 3
+     * @return успешно или нет
+     * TODO Проверить работу
+     */
+    public boolean setLevelRGB(byte channel, byte R, byte G, byte B)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Устанавливается яркость для кажого цвета RGB-контроллера на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SET_LEVEL.getCode());
+        buf.put((byte)DataFormat.FOUR_BYTE.ordinal());
+        buf.position(4);
+        buf.put(channel);
+        buf.put(R);
+        buf.put(G);
+        buf.put(B);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Вызвать записанный сценарий
+     * @return успешно или нет
+     */
+    public boolean callScene()
+    {
+        LOGGER.debug("Вызывается записанный сценарий");
+
+        buf.position(1);
+        buf.put((byte) CommandType.RUN_SCENE.getCode());
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Записать сценарий
+     * @return успешно или нет
+     */
+    public boolean recordScene()
+    {
+        LOGGER.debug("Записывается сценарий");
+
+        buf.position(1);
+        buf.put((byte) CommandType.RECORD_SCENE.getCode());
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Остановить регулировку яркости
+     * @return успешно или нет
+     */
+    public boolean stopDimBright(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Останавливается регулировка яркости на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.STOP_DIM_BRIGHT.getCode());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Включение плавного перебора цвета
+     * @return успешно или нет
+     */
+    public boolean slowRGBChange(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Включение плавного перебора цвета на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SLOW_RGB_CHANGE.getCode());
+        buf.put((byte)DataFormat.LED.ordinal());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Переключение цвета
+     * @return успешно или нет
+     */
+    public boolean colorChange(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Переключение цвета на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SWITCH_COLOR.getCode());
+        buf.put((byte)DataFormat.LED.ordinal());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Переключение режима работы RGB-контроллера
+     * @return успешно или нет
+     */
+    public boolean switchRGBMode(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Переключение режима работы RGB-контроллера на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SWITCH_MODE.getCode());
+        buf.put((byte)DataFormat.LED.ordinal());
+        buf.position(4);
+        buf.put(channel);
+
+        writeToHID(buf);
+
+        return true;
+    }
+
+    /**
+     * Переключение скорости эффекта в режиме работы RGB-контроллера
+     * @return успешно или нет
+     */
+    public boolean switchSpeedRGBMode(byte channel)
+    {
+        if(channel >= availableChannels) {
+            LOGGER.error("Максимальное количество каналов: " + availableChannels);
+            return false;
+        }
+
+        LOGGER.debug("Переключение скорости эффекта в режиме работы RGB-контроллера на канале {}", (channel+1));
+
+        /**
+         * Отсчет каналов начинается с 0
+         */
+        channel -= 1;
+
+        buf.position(1);
+        buf.put((byte) CommandType.SWITCH_SPEED_MODE.getCode());
+        buf.put((byte)DataFormat.LED.ordinal());
         buf.position(4);
         buf.put(channel);
 

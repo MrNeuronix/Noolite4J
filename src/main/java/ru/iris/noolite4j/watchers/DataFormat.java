@@ -23,5 +23,6 @@ public enum DataFormat {
     NO_DATA,
     ONE_BYTE,
     TWO_BYTE,
-    FOUR_BYTE
+    FOUR_BYTE,
+    LED
 }
