@@ -182,6 +182,15 @@ public class RX2164 {
                             LOGGER.debug("Количество данных к команде: 4 байта");
                             notification.setDataFormat(DataFormat.FOUR_BYTE);
                         }
+                        else if(dataFormat == DataFormat.LED.ordinal()) {
+                            LOGGER.debug("Количество данных к команде: формат LED");
+                            notification.setDataFormat(DataFormat.LED);
+                        }
+                        else
+                        {
+                            LOGGER.debug("Количество данных к команде: неизвестный тип");
+                            notification.setDataFormat(DataFormat.NO_DATA);
+                        }
 
                         notification.setChannel(channel);
 
