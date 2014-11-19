@@ -25,7 +25,7 @@ mvn package
 
 ``` java
     public static void main(String[] args) {
-        ...
+
                PR1132 pr = new PR1132();
                PC1116 pc = new PC1116();
                RX2164 rx = new RX2164();
@@ -81,7 +81,7 @@ mvn package
                rx.open();
                rx.addWatcher(watcher);
                rx.start();
-        ...
+
     }
 ```
 
