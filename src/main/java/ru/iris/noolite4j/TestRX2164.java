@@ -17,17 +17,15 @@
 package ru.iris.noolite4j;
 
 import ru.iris.noolite4j.receiver.RX2164;
-import ru.iris.noolite4j.sender.PC1116;
 import ru.iris.noolite4j.watchers.CommandType;
 import ru.iris.noolite4j.watchers.Notification;
 import ru.iris.noolite4j.watchers.SensorType;
 import ru.iris.noolite4j.watchers.Watcher;
 
-public class Main {
+public class TestRX2164 {
 
    public static void main(String[] ARGV)
    {
-       PC1116 pc = new PC1116();
        RX2164 rx = new RX2164();
 
        Watcher watcher = new Watcher() {
@@ -64,15 +62,6 @@ public class Main {
                }
            }
        };
-
-       byte channel = 1;
-       byte level = 85;
-
-       pc.open();
-       pc.turnOn(channel);
-       pc.turnOff(channel);
-       pc.setLevel(channel, level);
-       pc.close();
 
        rx.open();
        rx.addWatcher(watcher);

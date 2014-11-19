@@ -6,7 +6,7 @@ Java API к протоколу Noolite
 
 Сборка
 -----------------
-Для того, чтобы собрать библиотеку, Вам необходим **Apache maven**
+Для того, чтобы собрать библиотеку, Вам необходим **Apache Maven**
 
 Выполните в каталоге библиотеки команду:
 
@@ -77,6 +77,37 @@ mvn package
 
         ...
     }
+
+В скомпилированную библиотеку входят программы для тестирования приемника RX2164 и передатчика PC11xx.
+
+Примеры использования передатчика:
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "turnon" "1"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "turnoff" "1"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "setlevel" "1" "55"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "bind" "5"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "unbind" "5"
+```
+
+Примеры использования приемника:
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestRX2164
+```
+
 
 ## Планы
 - Добавить поддержку Ethernet-шлюза PR1132
