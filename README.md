@@ -27,11 +27,9 @@ mvn package
                PC1116 pc = new PC1116();
                RX2164 rx = new RX2164();
 
-                Watcher watcher = new Watcher() {
-
+               Watcher watcher = new Watcher() {
                    @Override
                    public void onNotification(Notification notification) {
-
                        System.out.println("----------------------------------");
                        System.out.println("RX2164 получил команду: ");
                        System.out.println("Устройство: " + notification.getChannel());
@@ -42,20 +40,22 @@ mvn package
                        if(notification.getType().equals(CommandType.TEMP_HUMI))
                        {
                            SensorType sensor = (SensorType)notification.getValue("sensorType");
+                           BatteryState battery = (BatteryState)notification.getValue("battery");
+
                            System.out.println("Температура: " + notification.getValue("temp"));
                            System.out.println("Влажность: " + notification.getValue("humi"));
                            System.out.println("Тип датчика: " + sensor.name());
-                           System.out.println("Состояние батареи: " + notification.getValue("battery"));
+                           System.out.println("Состояние батареи: " + battery.name());
 
-                           if(notification.getSensorType().equals(SensorType.PT111))
+                           if(sensor.equals(SensorType.PT111))
                            {
                               System.out.println("Обнаружен датчик температуры и влажности");
                            }
-                           else if(notification.getSensorType().equals(SensorType.PT112))
+                           else if(sensor.equals(SensorType.PT112))
                            {
                                System.out.println("Обнаружен датчик температуры");
                            }
-                           else if(notification.getSensorType().equals(SensorType.PT112))
+                           else if(sensor.equals(SensorType.PT112))
                            {
                                System.out.println("Обнаружен датчик движения");
                            }
@@ -73,7 +73,7 @@ mvn package
                pc.setLevel(channel, level);
 
                pc.close();
-               
+
                rx.open();
                rx.addWatcher(watcher);
                rx.start();
