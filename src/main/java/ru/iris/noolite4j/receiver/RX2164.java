@@ -331,6 +331,12 @@ public class RX2164 {
      */
     public void bindChannel(byte channel)
     {
+        if(channel > availableChannels-1)
+        {
+            LOGGER.error("Заданный канал больше максимального значения!");
+            return;
+        }
+
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 1);
         buf.put(channel);
@@ -347,6 +353,12 @@ public class RX2164 {
      */
     public void unbindChannel(byte channel)
     {
+        if(channel > availableChannels-1)
+        {
+            LOGGER.error("Заданный канал больше максимального значения!");
+            return;
+        }
+
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 3);
         buf.put(channel);
