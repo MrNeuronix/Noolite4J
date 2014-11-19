@@ -125,6 +125,7 @@ public class RX2164 {
             @Override
             public void run() {
 
+                int togl;
                 int tmpTogl = 0;
                 ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
@@ -145,7 +146,7 @@ public class RX2164 {
                     /**
                      * Сравниваем значение TOGL, чтобы понять, что пришла новая команда
                      */
-                    int togl = buf.get(0) & 63;
+                    togl = buf.get(0) & 63;
 
                     /**
                      * Получена новая команда

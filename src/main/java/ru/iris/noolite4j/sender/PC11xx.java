@@ -40,7 +40,8 @@ public class PC11xx {
     private static final Logger LOGGER = LoggerFactory.getLogger(PC11xx.class.getName());
     private final Context context = new Context();
     protected short availableChannels = 8;
-    protected byte sendRepeat = 1;
+    protected byte sendRepeat = 2;
+    private ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
     /**
      * Пытается найти и открыть HID-устройство PC11xx
@@ -87,6 +88,13 @@ public class PC11xx {
      * @param sendRepeat количество повторов
      */
     public void setSendRepeat(byte sendRepeat) {
+
+        if(sendRepeat < 0 || sendRepeat > 7)
+        {
+            LOGGER.error("Количество повторов не может быть меньше 0 и больше 7");
+            return;
+        }
+
         this.sendRepeat = sendRepeat;
     }
 
@@ -109,8 +117,7 @@ public class PC11xx {
          */
         channel -= 1;
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(8);
-        buf.put((byte) 0x30);
+        buf.position(1);
         buf.put((byte) CommandType.TURN_ON.getCode());
         buf.position(4);
         buf.put(channel);
@@ -139,8 +146,7 @@ public class PC11xx {
          */
         channel -= 1;
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(8);
-        buf.put((byte) 0x30);
+        buf.position(1);
         buf.put((byte) CommandType.TURN_OFF.getCode());
         buf.position(4);
         buf.put(channel);
@@ -167,8 +173,7 @@ public class PC11xx {
          */
         channel -= 1;
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(8);
-        buf.put((byte) 0x30);
+        buf.position(1);
         buf.put((byte) CommandType.SET_LEVEL.getCode());
         buf.put((byte) 1);
 
@@ -210,8 +215,7 @@ public class PC11xx {
             return false;
         }
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(8);
-        buf.put((byte) 0x30);
+        buf.position(1);
         buf.put((byte) CommandType.BIND.getCode());
         buf.position(4);
         buf.put(channel);
@@ -234,8 +238,7 @@ public class PC11xx {
             return false;
         }
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(8);
-        buf.put((byte) 0x30);
+        buf.position(1);
         buf.put((byte) CommandType.UNBIND.getCode());
         buf.position(4);
         buf.put(channel);
@@ -280,15 +283,24 @@ public class PC11xx {
 
         LibUsb.claimInterface(handle, 0);
 
+        /**
+         * В первом байте устанавливаем количество повторов посылки,
+         * битрейт и режим работы адаптера.
+         * Из всех этих параметров реально используется только количество повторов
+         */
+
+        buf.position(0);
+        buf.put((byte)(((sendRepeat & 0x3) << 6) + 0x30));
+
         LOGGER.debug("PC11XX содержимое буффера: " + command.get(0) + " " + command.get(1) + " " + command.get(2) + " " + command.get(3)
                 + " " + command.get(4) + " " + command.get(5) + " " + command.get(6)
                 + " " + command.get(7));
 
-        //send n times
-        for (int i = 0; i <= sendRepeat; i++)
-            LibUsb.controlTransfer(handle, (byte) (LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE), (byte) 0x9, (short) 0x300, (short) 0, command, 100L);
+        LibUsb.controlTransfer(handle, (byte) (LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE), (byte) 0x9, (short) 0x300, (short) 0, command, 100L);
 
         LibUsb.attachKernelDriver(handle, 0);
         LibUsb.close(handle);
+
+        buf.clear();
     }
 }
