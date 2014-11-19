@@ -1,8 +1,8 @@
 Noolite4J
 ===============
-Java API к протоколу Noolite
+Java API к протоколу беспроводных устройств **Noolite**
 
-Состояние сборки: [![Build Status](https://travis-ci.org/Neuronix2/Noolite4J.png?branch=master)](https://travis-ci.org/Neuronix2/Noolite4J)
+[![Build Status](https://travis-ci.org/Neuronix2/Noolite4J.png?branch=master)](https://travis-ci.org/Neuronix2/Noolite4J)
 
 Сборка
 -----------------
@@ -14,7 +14,8 @@ Java API к протоколу Noolite
 mvn package
 ```
 
-В результате исполнения в папке **target** вы найдете сам jar-архив с библиотекой и папку **lib** с зависимостями
+В результате исполнения в папке **target** вы найдете сам jar-архив с библиотекой и папку **lib** с зависимостями.
+Так же Вы можете [скачать последний скомпилированный релиз](https://github.com/Neuronix2/Noolite4J/releases)
 
 ## Использование
 Библиотека предоставляет доступ к USB-адаптерам Noolite для ПК, таким как передатчик PC11xx (PC118, PC1116, PC1132) и приемник RX2164.
