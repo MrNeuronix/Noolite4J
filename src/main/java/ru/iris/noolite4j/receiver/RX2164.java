@@ -133,6 +133,11 @@ public class RX2164 {
                  */
                 while (!shutdown) {
 
+                    /**
+                     * Пауза нужна для того чтобы иметь возможность записать буффер в устройство
+                     * (привязка, отвязка)
+                     * TODO возможно, есть решение лучше
+                     */
                     if (!pause) {
                         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100L);
                     }
