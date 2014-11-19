@@ -25,7 +25,6 @@ import org.usb4java.LibUsbException;
 import ru.iris.noolite4j.watchers.*;
 
 import java.nio.ByteBuffer;
-import java.util.BitSet;
 
 /**
  * Приемник комманд RX2164
@@ -192,7 +191,7 @@ public class RX2164 {
                                 break;
                             case SET_LEVEL:
                                 notification.setType(CommandType.SET_LEVEL);
-                                notification.addData("level", String.valueOf(buf.get(4)));
+                                notification.addData("level", buf.get(4));
                                 LOGGER.debug("Уровень устройства: " + buf.get(4));
                                 watcher.onNotification(notification);
                                 break;
@@ -271,24 +270,24 @@ public class RX2164 {
                                 double temp = (double)(intTemp / 10);
 
                                 // Состояни батареи
-                                notification.addData("battery", String.valueOf((buf.get(5) >> 7) & 1));
+                                notification.addData("battery", (buf.get(5) >> 7) & 1);
 
                                 // Температура
-                                notification.addData("temp", String.valueOf(temp));
+                                notification.addData("temp", temp);
 
                                 // Тип сенсора
-                                notification.setSensorType(SensorType.values()[((buf.get(5) >> 4) & 7)]);
+                                notification.addData("sensortype", SensorType.values()[((buf.get(5) >> 4) & 7)]);
 
                                 /**
                                  * В третьем байте данных хранится влажность
                                  */
-                                notification.addData("humi", String.valueOf(buf.get(6)));
+                                notification.addData("humi", buf.get(6));
 
                                 /**
                                  * В четвертом байте данных хранятся данные о состоянии аналогового датчика
                                  * По умолчанию - unsigned byte (255)
                                  */
-                                notification.addData("analog", String.valueOf(buf.get(7) & 0xff));
+                                notification.addData("analog", buf.get(7) & 0xff);
 
                                 watcher.onNotification(notification);
                                 break;

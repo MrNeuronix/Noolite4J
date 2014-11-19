@@ -42,29 +42,24 @@ public class Main {
                // Передаются данные с датчика
                if(notification.getType().equals(CommandType.TEMP_HUMI))
                {
-                   //System.out.println("Тип датчика: " + notification.getSensorType().name());
+                   SensorType sensor = (SensorType)notification.getValue("sensorType");
+
                    System.out.println("Температура: " + notification.getValue("temp"));
                    System.out.println("Влажность: " + notification.getValue("humi"));
-                   System.out.println("Тип датчика: " + notification.getValue("sensorType"));
+                   System.out.println("Тип датчика: " + sensor.name());
                    System.out.println("Состояние батареи: " + notification.getValue("battery"));
 
                    if(notification.getSensorType().equals(SensorType.PT111))
                    {
                       System.out.println("Обнаружен датчик температуры и влажности");
-
-
                    }
                    else if(notification.getSensorType().equals(SensorType.PT112))
                    {
                        System.out.println("Обнаружен датчик температуры");
-
-
                    }
                    else if(notification.getSensorType().equals(SensorType.PT112))
                    {
                        System.out.println("Обнаружен датчик движения");
-
-
                    }
                }
            }

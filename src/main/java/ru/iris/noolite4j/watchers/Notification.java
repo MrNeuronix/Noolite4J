@@ -27,7 +27,7 @@ public class Notification
     private DataFormat dataFormat;
     private SensorType sensorType = SensorType.NON_SENSOR;
     private byte channel;
-    private Map<String, String> data = new HashMap<String, String>();
+    private Map<String, Object> data = new HashMap<>();
 
     public ByteBuffer getBuffer() {
         return buffer;
@@ -69,20 +69,20 @@ public class Notification
         this.channel = channel;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, ?> getData() {
         return data;
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 
-    public void addData(String key, String value)
+    public void addData(String key, Object value)
     {
         data.put(key, value);
     }
 
-    public String getValue(String key)
+    public Object getValue(String key)
     {
         return data.get(key);
     }
