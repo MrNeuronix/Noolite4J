@@ -21,13 +21,12 @@ mvn package
 
 Пример использования:
 
+``` java
     public static void main(String[] args) {
         ...
-
                PC1116 pc = new PC1116();
                RX2164 rx = new RX2164();
-
-               Watcher watcher = new Watcher() {
+                Watcher watcher = new Watcher() {
                    @Override
                    public void onNotification(Notification notification) {
                        System.out.println("----------------------------------");
@@ -35,17 +34,14 @@ mvn package
                        System.out.println("Устройство: " + notification.getChannel());
                        System.out.println("Команда: " + notification.getType().name());
                        System.out.println("Формат данных к команде: " + notification.getDataFormat().name());
-
                        // Передаются данные с датчика
                        if(notification.getType().equals(CommandType.TEMP_HUMI))
                        {
                            SensorType sensor = (SensorType)notification.getValue("sensorType");
-
                            System.out.println("Температура: " + notification.getValue("temp"));
                            System.out.println("Влажность: " + notification.getValue("humi"));
                            System.out.println("Тип датчика: " + sensor.name());
                            System.out.println("Состояние батареи: " + notification.getValue("battery"));
-
                            if(notification.getSensorType().equals(SensorType.PT111))
                            {
                               System.out.println("Обнаружен датчик температуры и влажности");
@@ -61,22 +57,19 @@ mvn package
                        }
                    }
                };
-
                byte channel = 1;
                byte level = 85;
-
                pc.open();
                pc.turnOn(channel);
                pc.turnOff(channel);
                pc.setLevel(channel, level);
                pc.close();
-
                rx.open();
                rx.addWatcher(watcher);
                rx.start();
-
         ...
     }
+```
 
 В скомпилированную библиотеку входят программы для тестирования приемника RX2164 и передатчика PC11xx.
 
