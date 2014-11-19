@@ -39,7 +39,7 @@ public class RX2164 {
     private final Logger LOGGER = LoggerFactory.getLogger(RX2164.class.getName());
     private final Context context = new Context();
     private Watcher watcher = null;
-    private short availableChannels = 64;
+    private byte availableChannels = 64;
     private boolean shutdown = false;
     private DeviceHandle handle;
     private boolean pause = false;

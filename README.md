@@ -26,6 +26,7 @@ mvn package
 ``` java
     public static void main(String[] args) {
         ...
+               PR1132 pr = new PR1132();
                PC1116 pc = new PC1116();
                RX2164 rx = new RX2164();
 
@@ -64,6 +65,11 @@ mvn package
                byte channel = 1;
                byte level = 85;
 
+               PR1132.setHost("192.168.10.20");
+
+               pr.turnOn(channel);
+               pr.turnOff(channel);
+
                pc.open();
 
                pc.turnOn(channel);
@@ -79,7 +85,7 @@ mvn package
     }
 ```
 
-В скомпилированную библиотеку входят программы для тестирования приемника RX2164 и передатчика PC11xx.
+В скомпилированную библиотеку входят программы для тестирования приемника RX2164, передатчика PC11xx и Ethernet-шлюза PR1132.
 
 Примеры использования передатчика:
 
@@ -103,15 +109,33 @@ java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "bind" "5"
 java -cp noolite4j-x.jar ru.iris.noolite4j.TestPC11xx "unbind" "5"
 ```
 
+Примеры использования Ethenet-шлюза PR1132:
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPR1132 "192.168.10.20" "turnon" "1"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPR1132 "192.168.10.20" "turnoff" "1"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPR1132 "192.168.10.20" "setlevel" "1" "55"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPR1132 "192.168.10.20" "bind" "5"
+```
+
+```
+java -cp noolite4j-x.jar ru.iris.noolite4j.TestPR1132 "192.168.10.20" "unbind" "5"
+```
+
 Примеры использования приемника:
 
 ```
 java -cp noolite4j-x.jar ru.iris.noolite4j.TestRX2164
 ```
-
-
-## Планы
-- Добавить поддержку Ethernet-шлюза PR1132
 
 ## Лицензия
 Apache 2.0

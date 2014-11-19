@@ -40,8 +40,8 @@ public class PC11xx {
     private static final short PRODUCT_ID = 1503; //0x05df;
     private static final Logger LOGGER = LoggerFactory.getLogger(PC11xx.class.getName());
     private final Context context = new Context();
-    protected short availableChannels = 8;
-    protected byte sendRepeat = 2;
+    protected byte availableChannels = 8;
+    private byte sendRepeat = 2;
     private final ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
     /**
