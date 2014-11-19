@@ -36,7 +36,7 @@ public enum CommandType {
     BATTERY_LOW(20),
     TEMP_HUMI(21);
 
-    private int code;
+    private final int code;
 
     CommandType(int i) {
         this.code = i;

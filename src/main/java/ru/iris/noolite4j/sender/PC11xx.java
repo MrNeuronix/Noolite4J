@@ -42,7 +42,7 @@ public class PC11xx {
     private final Context context = new Context();
     protected short availableChannels = 8;
     protected byte sendRepeat = 2;
-    private ByteBuffer buf = ByteBuffer.allocateDirect(8);
+    private final ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
     /**
      * Пытается найти и открыть HID-устройство PC11xx
