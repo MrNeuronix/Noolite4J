@@ -45,15 +45,15 @@ public class TestRX2164 {
                    System.out.println("Тип датчика: " + sensor.name());
                    System.out.println("Состояние батареи: " + battery.name());
 
-                   if(notification.getSensorType().equals(SensorType.PT111))
+                   if(sensor.equals(SensorType.PT111))
                    {
                       System.out.println("Обнаружен датчик температуры и влажности");
                    }
-                   else if(notification.getSensorType().equals(SensorType.PT112))
+                   else if(sensor.equals(SensorType.PT112))
                    {
                        System.out.println("Обнаружен датчик температуры");
                    }
-                   else if(notification.getSensorType().equals(SensorType.PT112))
+                   else if(sensor.equals(SensorType.PT112))
                    {
                        System.out.println("Обнаружен датчик движения");
                    }

@@ -25,7 +25,6 @@ public class Notification
     private ByteBuffer buffer;
     private CommandType type;
     private DataFormat dataFormat;
-    private SensorType sensorType = SensorType.NON_SENSOR;
     private byte channel;
     private Map<String, Object> data = new HashMap<>();
 
@@ -51,14 +50,6 @@ public class Notification
 
     public void setDataFormat(DataFormat dataFormat) {
         this.dataFormat = dataFormat;
-    }
-
-    public SensorType getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(SensorType sensorType) {
-        this.sensorType = sensorType;
     }
 
     public byte getChannel() {
