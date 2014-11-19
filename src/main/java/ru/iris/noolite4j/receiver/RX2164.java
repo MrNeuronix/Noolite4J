@@ -225,6 +225,7 @@ public class RX2164 {
                                 break;
                             case BIND:
                                 notification.setType(CommandType.BIND);
+                                addTempHumiData(notification, buf);
                                 watcher.onNotification(notification);
                                 break;
                             case UNBIND:
@@ -253,42 +254,7 @@ public class RX2164 {
                                 break;
                             case TEMP_HUMI:
                                 notification.setType(CommandType.TEMP_HUMI);
-
-                                /**
-                                 * Информация о температуре, типе датчика и состоянии батареи
-                                 * размазана по 2 байтам
-                                 */
-
-                                int intTemp = ((buf.get(5) & 0x0f) << 8) + (buf.get(4) & 0xff);
-
-                                if (intTemp >= 0x800)
-                                {
-                                    intTemp = intTemp - 0x1000;
-                                }
-
-                                // Приводим к градусам Цельсия
-                                double temp = (double)intTemp / 10;
-
-                                // Состояни батареи
-                                notification.addData("battery", BatteryState.values()[(buf.get(5) >> 7) & 1]);
-
-                                // Температура
-                                notification.addData("temp", temp);
-
-                                // Тип сенсора
-                                notification.addData("sensortype", SensorType.values()[((buf.get(5) >> 4) & 7)]);
-
-                                /**
-                                 * В третьем байте данных хранится влажность
-                                 */
-                                notification.addData("humi", buf.get(6) & 0xff);
-
-                                /**
-                                 * В четвертом байте данных хранятся данные о состоянии аналогового датчика
-                                 * По умолчанию - unsigned byte (255)
-                                 */
-                                notification.addData("analog", buf.get(7) & 0xff);
-
+                                notification = addTempHumiData(notification, buf);
                                 watcher.onNotification(notification);
                                 break;
 
@@ -312,5 +278,45 @@ public class RX2164 {
                 }
             }
         }).start();
+    }
+
+    private Notification addTempHumiData(Notification notification, ByteBuffer buf) {
+
+        /**
+         * Информация о температуре, типе датчика и состоянии батареи
+         * размазана по 2 байтам
+         */
+
+        int intTemp = ((buf.get(5) & 0x0f) << 8) + (buf.get(4) & 0xff);
+
+        if (intTemp >= 0x800)
+        {
+            intTemp = intTemp - 0x1000;
+        }
+
+        // Приводим к градусам Цельсия
+        double temp = (double)intTemp / 10;
+
+        // Состояни батареи
+        notification.addData("battery", BatteryState.values()[(buf.get(5) >> 7) & 1]);
+
+        // Температура
+        notification.addData("temp", temp);
+
+        // Тип сенсора
+        notification.addData("sensortype", SensorType.values()[((buf.get(5) >> 4) & 7)]);
+
+        /**
+         * В третьем байте данных хранится влажность
+         */
+        notification.addData("humi", buf.get(6) & 0xff);
+
+        /**
+         * В четвертом байте данных хранятся данные о состоянии аналогового датчика
+         * По умолчанию - unsigned byte (255)
+         */
+        notification.addData("analog", buf.get(7) & 0xff);
+
+        return notification;
     }
 }
