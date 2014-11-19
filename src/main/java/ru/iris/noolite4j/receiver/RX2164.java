@@ -323,4 +323,49 @@ public class RX2164 {
             }
         }).start();
     }
+
+    /**
+     * Функция, используемая для привязки устройства
+     * на определенный канал RX2164
+     * @param channel канал, на которое будет привязано устройство
+     */
+    public void bindChannel(byte channel)
+    {
+        ByteBuffer buf = ByteBuffer.allocateDirect(8);
+        buf.put((byte) 1);
+        buf.put(channel);
+
+        pause = true;
+        LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        pause = false;
+    }
+
+    /**
+     * Функция, используемая для отвязки устройства
+     * с определенного канала RX2164
+     * @param channel канал, с которого будет отвязано устройство
+     */
+    public void unbindChannel(byte channel)
+    {
+        ByteBuffer buf = ByteBuffer.allocateDirect(8);
+        buf.put((byte) 3);
+        buf.put(channel);
+
+        pause = true;
+        LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        pause = false;
+    }
+
+    /**
+     * Функция, используемая для отвязки всех устройств RX2164
+     */
+    public void unbindAllChannels()
+    {
+        ByteBuffer buf = ByteBuffer.allocateDirect(8);
+        buf.put((byte) 4);
+
+        pause = true;
+        LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        pause = false;
+    }
 }
