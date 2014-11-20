@@ -106,7 +106,7 @@ public class PC11xx {
      */
     public boolean turnOn(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -135,7 +135,7 @@ public class PC11xx {
      */
     public boolean slowTurnOn(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -164,7 +164,7 @@ public class PC11xx {
      */
     public boolean slowTurnOff(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -193,7 +193,7 @@ public class PC11xx {
      */
     public boolean toggle(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -222,7 +222,7 @@ public class PC11xx {
      */
     public boolean revertSlowTurn(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -255,7 +255,7 @@ public class PC11xx {
      */
     public boolean setLevelRGB(byte channel, byte R, byte G, byte B)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -319,7 +319,7 @@ public class PC11xx {
      */
     public boolean stopDimBright(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -347,7 +347,7 @@ public class PC11xx {
      */
     public boolean slowRGBChange(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -376,7 +376,7 @@ public class PC11xx {
      */
     public boolean colorChange(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -405,7 +405,7 @@ public class PC11xx {
      */
     public boolean switchRGBMode(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -434,7 +434,7 @@ public class PC11xx {
      */
     public boolean switchSpeedRGBMode(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -464,7 +464,7 @@ public class PC11xx {
      */
     public boolean turnOff(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -493,7 +493,7 @@ public class PC11xx {
      */
     public boolean setLevel(byte channel, byte level)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -540,7 +540,7 @@ public class PC11xx {
      */
     public boolean bindChannel(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
@@ -563,7 +563,7 @@ public class PC11xx {
      */
     public boolean unbindChannel(byte channel)
     {
-        if(channel >= availableChannels) {
+        if(channel >= availableChannels-1) {
             LOGGER.error("Максимальное количество каналов: " + availableChannels);
             return false;
         }
