@@ -70,6 +70,11 @@ mvn package
                pr.turnOn(channel);
                pr.turnOff(channel);
 
+               List<Sensors> sensors = pr.getSensors();
+
+               // Температура с первого сенсора в списке
+               short temp = sensors.get(0).getTemperature();
+
                pc.open();
 
                pc.turnOn(channel);

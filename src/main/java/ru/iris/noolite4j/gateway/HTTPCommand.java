@@ -127,7 +127,7 @@ public class HTTPCommand {
 
                     Node nNode = nList.item(temp);
 
-                    byte value = Byte.valueOf(nNode.getNodeValue());
+                    short value = Short.valueOf(nNode.getNodeValue());
 
                     /**
                      * Найдем канал и связанный с ним сенсор
@@ -162,7 +162,7 @@ public class HTTPCommand {
                     }
                     else if(type.equals("snsh"))
                     {
-                        sensor.setHumidity(value);
+                        sensor.setHumidity((byte)value);
                     }
                     else if(type.equals("snt"))
                     {

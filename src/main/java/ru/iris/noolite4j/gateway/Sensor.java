@@ -20,7 +20,7 @@ public class Sensor {
 
 
     private byte channel;
-    private byte temperature;
+    private short temperature;
     private byte humidity;
     private SensorState state;
 
@@ -32,11 +32,11 @@ public class Sensor {
         this.channel = channel;
     }
 
-    public byte getTemperature() {
+    public short getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(byte temperature) {
+    public void setTemperature(short temperature) {
         this.temperature = temperature;
     }
 
