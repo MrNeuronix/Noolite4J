@@ -4,6 +4,15 @@ Java API к протоколу беспроводных устройств **Noo
 
 [![Build Status](https://travis-ci.org/Neuronix2/Noolite4J.png?branch=master)](https://travis-ci.org/Neuronix2/Noolite4J)
 
+Maven
+----------------
+
+    <dependency>
+      <groupId>ru.iris</groupId>
+      <artifactId>noolite4j</artifactId>
+      <version>1.2</version>
+    </dependency>
+
 Сборка
 -----------------
 Для того, чтобы собрать библиотеку, Вам необходим **Apache Maven**
