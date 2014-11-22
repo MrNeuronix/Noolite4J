@@ -29,7 +29,7 @@
     </developers>
 
     <scm>
-        <url>git@github.com:Neuronix2/Noolite4J.git/tags/noolite4j-1.2</url>
+        <url>git@github.com:Neuronix2/Noolite4J.git</url>
         <connection>scm:git:git@github.com:Neuronix2/Noolite4J.git</connection>
         <developerConnection>scm:git:git@github.com:Neuronix2/Noolite4J.git</developerConnection>
     </scm>
