@@ -126,7 +126,10 @@ public class RX2164 {
             public void run() {
 
                 int togl;
-                int tmpTogl = 0;
+
+                // Для старта бурем такое число, которе точно не может быть в данный момент в TOGL
+                int tmpTogl = -10000;
+
                 ByteBuffer buf = ByteBuffer.allocateDirect(8);
 
                 /**
@@ -152,7 +155,7 @@ public class RX2164 {
                      * Получена новая команда
                      * TOGL может быть 0
                      */
-                    if (togl == 0 || togl != tmpTogl) {
+                    if (togl != tmpTogl) {
 
                         Notification notification = new Notification();
 

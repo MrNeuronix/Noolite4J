@@ -10,7 +10,7 @@ Maven
     <dependency>
       <groupId>ru.iris</groupId>
       <artifactId>noolite4j</artifactId>
-      <version>1.2</version>
+      <version>1.2.1</version>
     </dependency>
 
 Сборка
