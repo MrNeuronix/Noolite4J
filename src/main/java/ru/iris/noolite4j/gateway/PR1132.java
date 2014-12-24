@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import ru.iris.noolite4j.watchers.CommandType;
 import ru.iris.noolite4j.watchers.DataFormat;
 
+import java.util.List;
+
 /**
  * Ethernet-шлюз PR1132
  * @see <a href="http://www.noo.com.by/Ethernet_PR1132.html">http://www.noo.com.by/Ethernet_PR1132.html</a>
@@ -41,6 +43,16 @@ public class PR1132 {
 
         LOGGER.debug("Устанавливается адрес для устройства PR1132: " + url);
         PR1132.url = url;
+    }
+
+    /**
+     * Возвращает текущие значения сенсоров
+     * @return список сенсоров
+     * TODO требует проверки работоспособности
+     */
+    public List<Sensor> getSensors()
+    {
+        return new HTTPCommand().getSensors();
     }
 
     public static String getHost()

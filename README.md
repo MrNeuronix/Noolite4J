@@ -10,7 +10,7 @@ Maven
     <dependency>
       <groupId>ru.iris</groupId>
       <artifactId>noolite4j</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3</version>
     </dependency>
 
 Сборка
@@ -79,7 +79,7 @@ mvn package
                pr.turnOn(channel);
                pr.turnOff(channel);
 
-               List<Sensors> sensors = pr.getSensors();
+               List<Sensor> sensors = pr.getSensors();
 
                // Температура с первого сенсора в списке
                short temp = sensors.get(0).getTemperature();

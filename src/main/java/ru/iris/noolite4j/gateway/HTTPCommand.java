@@ -30,12 +30,10 @@ import org.w3c.dom.NodeList;
 import ru.iris.noolite4j.watchers.CommandType;
 import ru.iris.noolite4j.watchers.DataFormat;
 
-import javax.xml.bind.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
