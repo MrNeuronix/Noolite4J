@@ -28,7 +28,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Приемник комманд RX2164
- * @link http://www.noo.com.by/adapter-dlya-kompyutera-rx2164.html
+ * @see <a href="http://www.noo.com.by/adapter-dlya-kompyutera-rx2164.html">http://www.noo.com.by/adapter-dlya-kompyutera-rx2164.html</a>
  */
 
 public class RX2164 {
@@ -55,7 +55,7 @@ public class RX2164 {
 
     /**
      * Точка начала работы с приемником
-     * @throws LibUsbException
+     * @throws LibUsbException ошибка LibUSB
      */
     public void open() throws LibUsbException {
 

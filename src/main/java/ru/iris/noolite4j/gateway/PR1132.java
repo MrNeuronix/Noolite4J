@@ -23,7 +23,7 @@ import ru.iris.noolite4j.watchers.DataFormat;
 
 /**
  * Ethernet-шлюз PR1132
- * @link http://www.noo.com.by/Ethernet_PR1132.html
+ * @see <a href="http://www.noo.com.by/Ethernet_PR1132.html">http://www.noo.com.by/Ethernet_PR1132.html</a>
  */
 
 public class PR1132 {
@@ -35,6 +35,7 @@ public class PR1132 {
 
     /**
      * Устанавливает адрес PR1132
+     * @param url адрес контроллера
      */
     public static void setHost(String url) {
 
@@ -241,6 +242,7 @@ public class PR1132 {
 
     /**
      * Остановить регулировку яркости
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean stopDimBright(byte channel)
@@ -266,6 +268,7 @@ public class PR1132 {
 
     /**
      * Включение плавного перебора цвета
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean slowRGBChange(byte channel)
@@ -292,6 +295,7 @@ public class PR1132 {
 
     /**
      * Переключение цвета
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean colorChange(byte channel)
@@ -318,6 +322,7 @@ public class PR1132 {
 
     /**
      * Переключение режима работы RGB-контроллера
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean switchRGBMode(byte channel)
@@ -344,6 +349,7 @@ public class PR1132 {
 
     /**
      * Переключение скорости эффекта в режиме работы RGB-контроллера
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean switchSpeedRGBMode(byte channel)
@@ -397,6 +403,7 @@ public class PR1132 {
     /**
      * Устанавливает уровень на диммируемом силовом блоке на определеном канале
      * @param channel канал диммера
+     * @param level выставляемый уровень
      * @return успешно или нет
      */
     public boolean setLevel(byte channel, byte level)

@@ -31,7 +31,7 @@ import java.nio.ByteBuffer;
  * Передатчик комманд PC118 (PC1116, PC1132)
  * Базовый класс
  * Модели отличаются количеством доступных каналов
- * @link http://www.noo.com.by/adapter-noolite-pc.html
+ * @see <a href="http://www.noo.com.by/adapter-noolite-pc.html">http://www.noo.com.by/adapter-noolite-pc.html</a>
  */
 
 public class PC11xx {
@@ -46,7 +46,7 @@ public class PC11xx {
 
     /**
      * Пытается найти и открыть HID-устройство PC11xx
-     * @throws LibUsbException
+     * @throws LibUsbException ошибка LibUSB
      */
     public void open() throws LibUsbException {
 
@@ -315,6 +315,7 @@ public class PC11xx {
 
     /**
      * Остановить регулировку яркости
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean stopDimBright(byte channel)
@@ -343,6 +344,7 @@ public class PC11xx {
 
     /**
      * Включение плавного перебора цвета
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean slowRGBChange(byte channel)
@@ -372,6 +374,7 @@ public class PC11xx {
 
     /**
      * Переключение цвета
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean colorChange(byte channel)
@@ -401,6 +404,7 @@ public class PC11xx {
 
     /**
      * Переключение режима работы RGB-контроллера
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean switchRGBMode(byte channel)
@@ -430,6 +434,7 @@ public class PC11xx {
 
     /**
      * Переключение скорости эффекта в режиме работы RGB-контроллера
+     * @param channel канал устройства
      * @return успешно или нет
      */
     public boolean switchSpeedRGBMode(byte channel)
@@ -489,6 +494,7 @@ public class PC11xx {
     /**
      * Устанавливает уровень на диммируемом силовом блоке на определеном канале
      * @param channel канал диммера
+     * @param level выставляемый уровень
      * @return успешно или нет
      */
     public boolean setLevel(byte channel, byte level)
