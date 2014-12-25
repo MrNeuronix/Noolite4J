@@ -33,6 +33,7 @@ import ru.iris.noolite4j.watchers.DataFormat;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -97,47 +98,59 @@ public class HTTPCommand {
     /**
      * Возвращает текущие значения сенсоров
      * @return список сенсоров
-     * TODO требует проверки работоспособности
      */
     public List<Sensor> getSensors()
     {
         List<Sensor> sensors = new ArrayList<>();
 
-        try
-        {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpGet httpget = new HttpGet("http://" + PR1132.getHost() + "/sens.xml");
-            CloseableHttpResponse response = httpclient.execute(httpget);
-
-            String body = EntityUtils.toString(response.getEntity());
-
             try {
 
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(body);
+                Document doc = dBuilder.parse("http://" + PR1132.getHost() + "/sens.xml");
 
                 doc.getDocumentElement().normalize();
 
-                NodeList nList = doc.getDocumentElement().getChildNodes();
+                String text = doc.getDocumentElement().getTextContent();
+                String[] values = text.split("\n");
 
-                for (int temp = 0; temp < nList.getLength(); temp++) {
+                for (int idx = 1; idx <= values.length - 1; idx++)
+                {
+                    if(values[idx].isEmpty())
+                        continue;
 
-                    Node nNode = nList.item(temp);
+                    double value = 0;
 
-                    short value = Short.valueOf(nNode.getNodeValue());
+                    if(!values[idx].equals("-")) {
+                        NumberFormat format = NumberFormat.getInstance();
+                        Number number = format.parse(values[idx]);
+                        value = number.doubleValue();
+                    }
 
                     /**
                      * Найдем канал и связанный с ним сенсор
                      */
 
-                    Pattern channels = Pattern.compile("\\d");
-                    Matcher channelMatch = channels.matcher(nNode.getNodeName());
-                    channelMatch.find();
+                    byte channel = 0;
 
-                    byte channel = Byte.valueOf(channelMatch.group());
+                    if(idx <= 3)
+                        channel = 1;
+                    else if(idx >= 4 && idx <= 6)
+                        channel = 2;
+                    else if(idx >= 7 && idx <= 9)
+                        channel = 3;
+                    else if(idx >= 10 && idx <= 12)
+                        channel = 4;
 
-                    Sensor sensor = sensors.get(channel);
+                    Sensor sensor;
+
+                    if(sensors.size() >= channel) {
+                        sensor = sensors.get(channel-1);
+                    }
+                    else
+                    {
+                        sensor = new Sensor();
+                    }
 
                     if(sensor == null)
                         sensor = new Sensor();
@@ -148,23 +161,17 @@ public class HTTPCommand {
                      * Определим тип данных
                      */
 
-                    Pattern sensorType = Pattern.compile("\\w+");
-                    Matcher sensorTypeMatch = sensorType.matcher(nNode.getNodeName());
-                    sensorTypeMatch.find();
-
-                    String type = sensorTypeMatch.group();
-
-                    if(type.equals("snst"))
+                    if(idx == 1 || idx == 4 || idx == 7 || idx == 10)
                     {
                         sensor.setTemperature(value);
                     }
-                    else if(type.equals("snsh"))
+                    else if(idx == 2 || idx == 5 || idx == 8 || idx == 11)
                     {
                         sensor.setHumidity((byte)value);
                     }
-                    else if(type.equals("snt"))
+                    else if(idx == 3 || idx == 6 || idx == 9 || idx == 12)
                     {
-                        sensor.setState(SensorState.values()[value]);
+                        sensor.setState(SensorState.values()[(int) value]);
                     }
 
                     boolean isNew = true;
@@ -187,12 +194,6 @@ public class HTTPCommand {
                 LOGGER.error("Произошла разборе данных с датчиков на PR1132: " + e.getMessage());
                 e.printStackTrace();
             }
-
-        } catch (IOException e)
-        {
-            LOGGER.error("Произошла ошибка при отправке команды PR1132: " + e.getMessage());
-            e.printStackTrace();
-        }
 
         return sensors;
 

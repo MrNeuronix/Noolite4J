@@ -7,7 +7,7 @@
 
     <groupId>ru.iris</groupId>
     <artifactId>noolite4j</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <packaging>jar</packaging>
     <url>https://github.com/Neuronix2/Noolite4J</url>
 
