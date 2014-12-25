@@ -554,9 +554,9 @@ public class PC11xx {
         buf.position(1);
         buf.put((byte) CommandType.BIND.getCode());
         buf.position(4);
-        buf.put(channel);
+        buf.put((byte) (channel-1));
 
-        LOGGER.debug("Включен режим привязки для канала " + (channel + 1));
+        LOGGER.debug("Включен режим привязки для канала " + channel);
 
         writeToHID(buf);
         return true;
@@ -577,9 +577,9 @@ public class PC11xx {
         buf.position(1);
         buf.put((byte) CommandType.UNBIND.getCode());
         buf.position(4);
-        buf.put(channel);
+        buf.put((byte) (channel-1));
 
-        LOGGER.debug("Включен режим отвязки для канала " + (channel + 1));
+        LOGGER.debug("Включен режим отвязки для канала " + channel);
 
         writeToHID(buf);
         return true;

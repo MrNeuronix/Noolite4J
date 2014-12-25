@@ -163,6 +163,7 @@ public class HTTPCommand {
 
                     if(idx == 1 || idx == 4 || idx == 7 || idx == 10)
                     {
+                        value /= 10;
                         sensor.setTemperature(value);
                     }
                     else if(idx == 2 || idx == 5 || idx == 8 || idx == 11)
