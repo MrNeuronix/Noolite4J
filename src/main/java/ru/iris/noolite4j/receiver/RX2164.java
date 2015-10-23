@@ -111,6 +111,10 @@ public class RX2164 {
     public void close() {
         LOGGER.debug("Закрывается устройство RX2164");
         shutdown = true;
+
+        if(handle != null)
+            LibUsb.close(handle);
+
         LibUsb.exit(context);
     }
 
