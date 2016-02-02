@@ -353,6 +353,8 @@ public class RX2164 {
      */
     public void bindChannel(byte channel)
     {
+        LOGGER.debug("Получена новая команда для RX2164 - запрос привязки на канал " + channel);
+
         if(channel > availableChannels-1)
         {
             LOGGER.error("Заданный канал больше максимального значения!");
@@ -364,8 +366,20 @@ public class RX2164 {
         buf.put(channel);
 
         pause = true;
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        try {
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         pause = false;
+
+        LOGGER.debug("Команда выполнена");
     }
 
     /**
@@ -375,19 +389,35 @@ public class RX2164 {
      */
     public void unbindChannel(byte channel)
     {
+        LOGGER.debug("Получена новая команда для RX2164 - запрос отвязки с канала " + channel);
+
         if(channel > availableChannels-1)
         {
             LOGGER.error("Заданный канал больше максимального значения!");
             return;
         }
 
+        LOGGER.error("Заданный канал больше максимального значения!");
+
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 3);
         buf.put(channel);
 
         pause = true;
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        try {
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         pause = false;
+
+        LOGGER.debug("Команда выполнена");
     }
 
     /**
@@ -395,11 +425,25 @@ public class RX2164 {
      */
     public void unbindAllChannels()
     {
+        LOGGER.debug("Получена новая команда для RX2164 - отчистка всех привязок");
+
         ByteBuffer buf = ByteBuffer.allocateDirect(8);
         buf.put((byte) 4);
 
         pause = true;
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LibUsb.controlTransfer(handle, (byte)(LibUsb.REQUEST_TYPE_CLASS | LibUsb.RECIPIENT_INTERFACE | LibUsb.ENDPOINT_IN), (byte)0x9, (short)0x300, (short)0, buf, 100);
+        try {
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         pause = false;
+
+        LOGGER.debug("Команда выполнена");
     }
 }
